@@ -15,7 +15,7 @@ fetch("http://localhost:3000/api/products/"+IdNumerique)
     })
     .then(function(canapeProduit){             
         recupererInformationsDuCanape(canapeProduit);            
-    });
+    })
     .catch(function(erreur){
     alert("une erreur est survenue");
     });
@@ -42,20 +42,15 @@ function recupererInformationsDuCanape (unCanape){
         let descriptionCanape = document.getElementById("description");
         descriptionCanape.innerText = unCanape.description;
 
-        // Afficher tous les coloris de l'API par article
-        afficherUnColoris()
-        creerElementHTML();
+        // // Afficher tous les coloris de l'API par article
+        // optionSelectColoris();
 
-        function afficherUnColoris (){    
-            let tableauColorisCanape = unCanape.colors;  
-            console.log(tableauColorisCanape);     
-            for (const UnColorisCanape of tableauColorisCanape) {
-            console.log(UnColorisCanape);
-            }        
-        }
-
-        function creerElementHTML(){
-        //     let tableauColorisCanape = unCanape.colors; 
+        // function optionSelectColoris (){    
+        //     let tableauColorisCanape = unCanape.colors;     
+        //     for (const UnColorisCanape of tableauColorisCanape) {
+        //     console.log(UnColorisCanape);
+        //     }     
+            
         //     for (let coloris in tableauColorisCanape) { 
                 
         //         let baliseOption = document.querySelector("option")
@@ -66,8 +61,6 @@ function recupererInformationsDuCanape (unCanape){
             
         //         baliseOption.appendChild(optionColoris);   
         //     }
-
-        //         }
-        
+        // }
 
 };
