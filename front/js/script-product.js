@@ -42,25 +42,19 @@ function recupererInformationsDuCanape (unCanape){
         let descriptionCanape = document.getElementById("description");
         descriptionCanape.innerText = unCanape.description;
 
-        // // Afficher tous les coloris de l'API par article
-        // optionSelectColoris();
-
-        // function optionSelectColoris (){    
-        //     let tableauColorisCanape = unCanape.colors;     
-        //     for (const UnColorisCanape of tableauColorisCanape) {
-        //     console.log(UnColorisCanape);
-        //     }     
-            
-        //     for (let coloris in tableauColorisCanape) { 
+        afficherUnColoris()
+        // fonction pour recupérer les coloris d'un article et les injecter dans la page web
+        function afficherUnColoris (){    
+            let tableauColorisCanape = unCanape.colors; 
+            for (let coloris of tableauColorisCanape) { 
                 
-        //         let baliseOption = document.querySelector("option")
+                let baliseOption = document.querySelector(".item__content__settings__color select");
             
-        //         let optionColoris = document.createElement("option");
-        //         optionColoris.value = unCanape.colors[0];            
-        //         optionColoris.innerText = unCanape.colors[0];
+                let optionColoris = document.createElement("option");
+                optionColoris.value = coloris;            
+                optionColoris.innerText = coloris;
             
-        //         baliseOption.appendChild(optionColoris);   
-        //     }
-        // }
-
+                baliseOption.appendChild(optionColoris);   
+            }
+        }
 };
