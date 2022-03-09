@@ -57,17 +57,17 @@ function recupererInformationsDuCanape (unCanape){
 
 /***** gestion de l'ajout au panier *******/
 
-// Sélectionner l'id du formualire
+// Sélectionner l'option du formulaire
 const optionSelecteur= document.querySelector("#colors"); 
-console.log(optionSelecteur);
+//console.log(optionSelecteur);
 
 // Sélectionner la quantité de produit
 const quantiteSelecteur= document.querySelector("#quantity"); 
-console.log(quantiteSelecteur);
+//console.log(quantiteSelecteur);
 
 //sélection du bouton "Ajouter au panier"
 const boutonAjouterPanier = document.querySelector("#addToCart");
-console.log(boutonAjouterPanier);
+//console.log(boutonAjouterPanier);
 
 //Ecouter le bouton et envoyer le panier
 boutonAjouterPanier.addEventListener("click", (event)=>{
@@ -83,11 +83,13 @@ boutonAjouterPanier.addEventListener("click", (event)=>{
 });
 
 // // tableau pour stockage
-// tableauUnProduit =[
+// let tableauUnProduit ={
 //     idProduit : idNumerique,
 //     colorisProduit : choixColoris,
 //     quantitéProduit : quantiteProduit,
-// ]
+// };
+
+// console.log(tableauUnProduit);
 
 
 
