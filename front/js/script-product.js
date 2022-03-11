@@ -39,72 +39,77 @@ function recupererInformationsDuCanape (unCanape){
     let descriptionCanape = document.getElementById("description");
     descriptionCanape.innerText = unCanape.description;
 
-    afficherUnColoris();
-    // fonction pour récupérer les coloris d'un article et les injecter dans la page web
-    function afficherUnColoris (){    
-        let tableauColorisCanape = unCanape.colors; 
-        for (let coloris of tableauColorisCanape) {             
-            let baliseOption = document.querySelector(".item__content__settings__color select");
-        
-            let optionColoris = document.createElement("option");
-            optionColoris.value = coloris;            
-            optionColoris.innerText = coloris;
-        
-            baliseOption.appendChild(optionColoris);   
-        }
-    }
+    afficherUnColoris(unCanape.colors);
 };
+
+// fonction pour récupérer les coloris d'un article et les injecter dans la page web
+function afficherUnColoris (colors){    
+    for (let coloris of colors) {             
+        let baliseOption = document.querySelector(".item__content__settings__color select");
+    
+        let optionColoris = document.createElement("option");
+        optionColoris.value = coloris;            
+        optionColoris.innerText = coloris;
+    
+        baliseOption.appendChild(optionColoris);   
+    }
+}
 
 /******************************************************************************
  *  Gestion de l'ajout au panier 
  ******************************************************************************/
 
-
-// /******Bouton ajouter au panier*****************/
+/******Bouton ajouter au panier*****************/
 
 // Sélectionner l'option du formulaire
-const optionSelecteur= document.querySelector("#colors"); 
+const optionSelecteur= document.getElementById("colors"); 
 // Sélectionner la quantité de produit
-const quantiteSelecteur= document.querySelector("#quantity"); 
+const quantiteSelecteur= document.getElementById("quantity"); 
 // Sélectionner le bouton "Ajouter au panier"
-const boutonAjouterPanier = document.querySelector("#addToCart");
+const boutonAjouterPanier = document.getElementById("addToCart");
 
 //Ecouter le bouton et envoyer les données dans le panier
-boutonAjouterPanier.addEventListener("click", (event)=>{
-    event.preventDefault();
 
-    // Mettre le choix du coloris
+boutonAjouterPanier.addEventListener("click", () => {
+    
+    // Mettre le choix du coloris dans une variable
     const choixColoris = optionSelecteur.value;
     // Mettre la quantité dans une variable
-    const quantiteProduit = quantiteSelecteur.value;    
-
+    const quantiteProduit = quantiteSelecteur.value;
+    // si quantité est = 0
+    if(quantiteProduit == 0) {
+        return;
+    }
     // tableau associatif qui prend toutes les données pour le stockage
     let tableauAssociatifProduit = {
         "idProduit" : idNumerique,
         "quantiteproduit" : quantiteProduit,
         "colorisProduit" : choixColoris,
     };
+    console.log(tableauAssociatifProduit);
 
-    /********************************************************************
+    /****************
      * localStorage
-     *******************************************************************/
+     ****************/
     //Variable pour transformer les valeurs en objet JSON
     let produitLocalStorage = JSON.parse(localStorage.getItem("produit"));
 
-    if(produitLocalStorage){//si déja dans localStorage
-        produitLocalStorage.push(tableauAssociatifProduit);
-        localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
-        
-    }
-    else {//si pas de produit enregistré dans le localStorage créer une clé/valeur
+    if(!produitLocalStorage){
+        //si pas de produit enregistré dans le localStorage créer une clé/valeur
         produitLocalStorage = [];
+    }
+
+    // Parcourir le tableau pour rechercher le produit et sa couleur
+    let trouverProduit = produitLocalStorage.filter((produit) => produit.idProduit == idNumerique && produit.colorisProduit == choixColoris);
+    // Si le produit et sa couleur existe, ajouter à la quantité
+    if (trouverProduit = produitLocalStorage){
+        trouverProduit.quantite + quantiteProduit;
+    } 
+    // Sinon, ajouter le produit, sa couleur et la quantité dans le produitLocalStorage
+    else {
         produitLocalStorage.push(tableauAssociatifProduit);
         localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
-        
     }
 });
-
-
-
 
 

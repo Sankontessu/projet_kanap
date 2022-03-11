@@ -1,30 +1,34 @@
-// sauvegarer les données du panier
+// sauvegarer les données du panier dans le localStorage
 function sauvegarderPanier(monPanier){
-    localStorage.setItem("panier", JSON.stringify(monPanier)); //sérialiser les données pour stocker
+                                //sérialiser les données pour stocker dans localStorage
+    localStorage.setItem("panier", JSON.stringify(monPanier)); 
+                        // clé                      valeur
 }
 
 //Récuperer les données du panier
-function recupererPanier(){
-    let panier = localStorage.getItem("panier");
-    if(panier == null){
+function recupererPanier(){             //clé
+    let panier = localStorage.getItem("panier");// getItem retourne un null
+    if(panier == null){// si existe pas un tableau vide
         return [];
-    } else {
+    } else { // sinon creer un tableau au format JSON
         return JSON.parse(panier); // parser pour transformer en objet 
     }
 }
 
-//Ajouter un article au  panier
+//Ajouter un article au panier
+                      //variable
 function ajouterPanier(produit){
     let panier = recupererPanier();
     // chercher dans le tableau le produit avec son id grâce à la propriété .find
-    let trouverProduit = panier.find(p => p.id && p.coloris == produit.id && produit.coloris);//à vérifier
-    if (trouverProduit != undefined){
+    let trouverProduit = panier.find(p => p.id  == produit.id );
+                        // undefined propre à l'utilisation de find
+    if (trouverProduit != undefined){ // si oui  augmenter la quantité
         trouverProduit.quantite++;
     } else {
         produit.quantite + 1;
         panier.push(produit); // ajouter dans un tableau
     }
-    sauvegarderPanier(panier);
+    sauvegarderPanier(panier);//enregistrer nouveau panier
 }
 
 //Supprimer un produit du panier
@@ -48,6 +52,7 @@ function changerQuantite(produit, quantite) {
         }
     }    
 }
+
 //Récupérer la quantité de produit dans le panier 
 function recupererProduit(){
     let panier = recupererPanier();
@@ -57,6 +62,7 @@ function recupererProduit(){
     }
     return nombre;
 }
+
 //Récuperer prix total du panier
 function recupererPrix(){
     let panier = recupererPanier();
