@@ -5,7 +5,9 @@ const urlIdNumerique = new URLSearchParams(urlIdProduit);
 const idNumerique = urlIdNumerique.get("id");
 
 
-//Appeler l'API pour charger les données
+/*********************************************************************************
+ * Appeler l'API pour charger les données
+ ********************************************************************************/
 fetch("http://localhost:3000/api/products/"+idNumerique)
     .then(function(reponse){
         if(reponse.ok) {
@@ -40,9 +42,12 @@ function recupererInformationsDuCanape (unCanape){
     descriptionCanape.innerText = unCanape.description;
 
     afficherUnColoris(unCanape.colors);
-};
+}
 
-// fonction pour récupérer les coloris d'un article et les injecter dans la page web
+/**********************************************************************************
+ * fonction pour récupérer les coloris d'un article et les injecter dans la page web
+ * @param {object} colors 
+ ***********************************************************************************/
 function afficherUnColoris (colors){    
     for (let coloris of colors) {             
         let baliseOption = document.querySelector(".item__content__settings__color select");
@@ -68,48 +73,67 @@ const quantiteSelecteur= document.getElementById("quantity");
 // Sélectionner le bouton "Ajouter au panier"
 const boutonAjouterPanier = document.getElementById("addToCart");
 
-//Ecouter le bouton et envoyer les données dans le panier
-
-boutonAjouterPanier.addEventListener("click", () => {
-    
+/****Ecouter le bouton et envoyer les données dans le panier */
+boutonAjouterPanier.addEventListener("click", () => {    
     // Mettre le choix du coloris dans une variable
     const choixColoris = optionSelecteur.value;
     // Mettre la quantité dans une variable
     const quantiteProduit = quantiteSelecteur.value;
+
     // si quantité est = 0
     if(quantiteProduit == 0) {
         return;
-    }
+    };
+
     // tableau associatif qui prend toutes les données pour le stockage
     let tableauAssociatifProduit = {
         "idProduit" : idNumerique,
-        "quantiteproduit" : quantiteProduit,
+        "quantiteProduit" : quantiteProduit,
         "colorisProduit" : choixColoris,
     };
-    console.log(tableauAssociatifProduit);
 
     /****************
      * localStorage
-     ****************/
-    //Variable pour transformer les valeurs en objet JSON
+     * *********************/
+
+    //Variable pour transformer les valeurs en objet JSON dans le localStorage
     let produitLocalStorage = JSON.parse(localStorage.getItem("produit"));
-
-    if(!produitLocalStorage){
-        //si pas de produit enregistré dans le localStorage créer une clé/valeur
-        produitLocalStorage = [];
-    }
-
-    // Parcourir le tableau pour rechercher le produit et sa couleur
-    let trouverProduit = produitLocalStorage.filter((produit) => produit.idProduit == idNumerique && produit.colorisProduit == choixColoris);
-    // Si le produit et sa couleur existe, ajouter à la quantité
-    if (trouverProduit = produitLocalStorage){
-        trouverProduit.quantite + quantiteProduit;
+    
+    // Factoriser pour ajouter un produit selectionné au localStorage
+    const ajouterProduitLocalStorage = () => {
+        // ajouter les données du tableau dans le stockage
+        produitLocalStorage.push(tableauAssociatifProduit); 
+        // stocker au format chaine de caractères
+        localStorage.setItem("produit", JSON.stringify(produitLocalStorage));  
+    };
+    //si PAS de produit enregistré dans le localStorage créer un tableau 'clé/valeur'
+    if(!produitLocalStorage){        
+        produitLocalStorage = []; // créer le tableau
+        ajouterProduitLocalStorage()
     } 
-    // Sinon, ajouter le produit, sa couleur et la quantité dans le produitLocalStorage
+    // si produit existant,  chercher le produit et vérifier si c'est le même ID puie le même coloris pour créer la ligne ou incrémenter la quantité
     else {
-        produitLocalStorage.push(tableauAssociatifProduit);
-        localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
-    }
+    //Parcourir le tableau pour rechercher le id du produit 
+        let trouverIdProduit = produitLocalStorage.filter((produit) => produit.idProduit == idNumerique);
+        // si Id produit différent, créer une ligne
+        if (trouverIdProduit != produitLocalStorage) {
+            ajouterProduitLocalStorage();      
+        }// si Id produit identique, chercher le coloris pour soit créer une ligne ou incrémenté la quantité
+        else {
+            let trouverColorisProduit = produitLocalStorage.filter((produit) => produit.colorisProduit == choixColoris);
+            //si le coloris est différent, je crée un tabaleau
+            if(trouverColorisProduit != produitLocalStorage) { 
+                ajouterProduitLocalStorage();          
+            } // si même coloris j'ajoute la quantité du produit à celle dejà enretgistrée
+            else {    
+                let trouverQuantiteProduit = produitLocalStorage.filter((produit) => produit.quantiteProduit == quantiteProduit);
+                //additionner la quantité à celle déja enregistrée
+                let nouvelleQuantite = trouverQuantiteProduit + produitLocalStorage.quantiteProduit;
+                produitLocalStorage.push(tableauAssociatifProduit); // ajouter les données du tableau dans le stockage
+                nouvelleQuantite = JSON.parse(localStorage.getItem("produit"));  // transforme en objet
+                }
+        }                
+    } 
 });
 
 
