@@ -105,7 +105,9 @@ boutonAjouterPanier.addEventListener("click", () => {
         produitLocalStorage.push(tableauAssociatifProduit); 
         // stocker au format chaine de caractères
         localStorage.setItem("produit", JSON.stringify(produitLocalStorage));  
+        console.log(produitLocalStorage);
     };
+
     //si PAS de produit enregistré dans le localStorage créer un tableau 'clé/valeur'
     if(!produitLocalStorage){        
         produitLocalStorage = []; // créer le tableau
@@ -116,24 +118,21 @@ boutonAjouterPanier.addEventListener("click", () => {
     //Parcourir le tableau pour rechercher le id du produit 
         let trouverIdProduit = produitLocalStorage.filter((produit) => produit.idProduit == idNumerique);
         // si Id produit différent, créer une ligne
-        if (trouverIdProduit != produitLocalStorage) {
+        if (!trouverIdProduit) {
             ajouterProduitLocalStorage();      
-        }// si Id produit identique, chercher le coloris pour soit créer une ligne ou incrémenté la quantité
+        }// si Id produit identique, chercher le coloris pour : soit créer une ligne ou incrémenter la quantité
         else {
-            let trouverColorisProduit = produitLocalStorage.filter((produit) => produit.colorisProduit == choixColoris);
+            let trouverColorisProduit = trouverIdProduit.find((produit) => produit.colorisProduit == choixColoris);
             //si le coloris est différent, je crée un tabaleau
-            if(trouverColorisProduit != produitLocalStorage) { 
+            if(!trouverColorisProduit) { 
                 ajouterProduitLocalStorage();          
-            } // si même coloris j'ajoute la quantité du produit à celle dejà enretgistrée
+            } // si même coloris, j'ajoute la quantité du produit à celle dejà enregistrée
             else {    
-                let trouverQuantiteProduit = produitLocalStorage.filter((produit) => produit.quantiteProduit == quantiteProduit);
-                //additionner la quantité à celle déja enregistrée
-                let nouvelleQuantite = trouverQuantiteProduit + produitLocalStorage.quantiteProduit;
-                produitLocalStorage.push(tableauAssociatifProduit); // ajouter les données du tableau dans le stockage
-                nouvelleQuantite = JSON.parse(localStorage.getItem("produit"));  // transforme en objet
+                //additionner la quantité à celle déja enregistrée avec le parseInt(string, base);
+                let nouvelleQuantite = parseInt(quantiteProduit) + parseInt(trouverColorisProduit.quantiteProduit);
+                trouverColorisProduit.quantiteProduit = nouvelleQuantite
+                localStorage.setItem("produit", JSON.stringify(produitLocalStorage))
                 }
         }                
     } 
 });
-
-
