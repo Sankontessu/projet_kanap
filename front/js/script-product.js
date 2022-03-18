@@ -92,9 +92,9 @@ boutonAjouterPanier.addEventListener("click", () => {
         "colorisProduit" : choixColoris,
     };
 
-    /****************
+    /*********************
      * localStorage
-     * *********************/
+    **********************/
 
     //Variable pour transformer les valeurs en objet JSON dans le localStorage
     let produitLocalStorage = JSON.parse(localStorage.getItem("produit"));
@@ -105,7 +105,7 @@ boutonAjouterPanier.addEventListener("click", () => {
         produitLocalStorage.push(tableauAssociatifProduit); 
         // stocker au format chaine de caractères
         localStorage.setItem("produit", JSON.stringify(produitLocalStorage));  
-        console.log(produitLocalStorage);
+        //console.log(produitLocalStorage);
     };
 
     //si PAS de produit enregistré dans le localStorage créer un tableau 'clé/valeur'
@@ -128,7 +128,7 @@ boutonAjouterPanier.addEventListener("click", () => {
                 ajouterProduitLocalStorage();          
             } // si même coloris, j'ajoute la quantité du produit à celle dejà enregistrée
             else {    
-                //additionner la quantité à celle déja enregistrée avec le parseInt(string, base);
+                //additionner la quantité à celle déja enregistrée avec le parseInt qui converti les string en nombre entier;
                 let nouvelleQuantite = parseInt(quantiteProduit) + parseInt(trouverColorisProduit.quantiteProduit);
                 trouverColorisProduit.quantiteProduit = nouvelleQuantite
                 localStorage.setItem("produit", JSON.stringify(produitLocalStorage))
